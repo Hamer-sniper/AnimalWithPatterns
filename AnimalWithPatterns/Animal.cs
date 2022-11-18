@@ -27,5 +27,10 @@ namespace AnimalWithPatterns
         /// Издаваемый звук
         /// </summary>
         public string Sound { get; set; }
+
+        public override string ToString()
+        {
+            return $"{AnimalId}; {Name}; {Type}; {Sound};";
+        }
     }
 }

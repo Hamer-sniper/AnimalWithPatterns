@@ -40,6 +40,8 @@
                 <ContextMenu>
                     <MenuItem Header="Добавить" Click="MenuItemAddClick"/>
                     <MenuItem Header="Удалить" Click="MenuItemDeleteClick"/>
+                    <MenuItem Header="Сохранить в TXT" Click="MenuItemSaveToTXTClick"/>
+                    <MenuItem Header="Сохранить в XLSX" Click="MenuItemSaveToXLSXClick"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,6 +23,7 @@ namespace AnimalWithPatterns
     public partial class MainWindow : Window
     {
         Repository repository;
+        SaverToFormats stf;
 
         public MainWindow()
         {
@@ -87,6 +89,22 @@ namespace AnimalWithPatterns
         private void AccessGVCurrentCellChanged(object sender, EventArgs e)
         {
             repository.SaveChanges();
+        }
+
+        private void MenuItemSaveToTXTClick(object sender, RoutedEventArgs e)
+        {
+            var saveToTXT = new SaverToTXT("AnimalsTXT");
+
+            stf = new SaverToFormats(saveToTXT, repository);
+            stf.Save();
+        }
+
+        private void MenuItemSaveToXLSXClick(object sender, RoutedEventArgs e)
+        {
+            var saveToXLSX = new SaverToXLSX("AnimalsXLSX");
+
+            stf = new SaverToFormats(saveToXLSX, repository);
+            stf.Save();
         }
     }
 }
