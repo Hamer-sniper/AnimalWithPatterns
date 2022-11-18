@@ -12,10 +12,15 @@ namespace AnimalWithPatterns
 
         public Repository Reposit { get; set; }
 
+        public SaverToFormats(Repository repository)
+        {
+            this.Reposit = repository;
+        }
+
         public SaverToFormats(ISaverToFormats Method, Repository repository)
+            : this (repository)
         {
             this.Mode = Method;
-            this.Reposit = repository;
         }
 
         public void Save()

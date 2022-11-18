@@ -15,7 +15,7 @@
                 case "Mammals": return new Mammals(Name);
                 case "Amphibias": return new Amphibias(Name);
                 case "Birds": return new Birds(Name);
-                default: return new NullAnimal();
+                default: return new NullAnimal(Name);
             }
         }
     }

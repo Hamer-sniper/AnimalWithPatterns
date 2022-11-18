@@ -39,6 +39,7 @@
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Добавить" Click="MenuItemAddClick"/>
+                    <MenuItem Header="Добавить случайное животное" Click="MenuItemAddRandomClick"/>
                     <MenuItem Header="Удалить" Click="MenuItemDeleteClick"/>
                     <MenuItem Header="Сохранить в TXT" Click="MenuItemSaveToTXTClick"/>
                     <MenuItem Header="Сохранить в XLSX" Click="MenuItemSaveToXLSXClick"/>

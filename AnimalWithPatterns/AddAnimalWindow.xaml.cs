@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using System.Data.Entity;
+using System.Windows;
 
 namespace AnimalWithPatterns
 {
@@ -7,21 +9,23 @@ namespace AnimalWithPatterns
     /// </summary>
     public partial class AddAnimalWindow : Window
     {
-        private AddAnimalWindow()
+        public AddAnimalWindow()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         /// <summary>
         /// Диалог добавления животного
         /// </summary>
-        /// <param name="repository">Репозиторий Animals</param>
-        public AddAnimalWindow(Repository repository) : this()
+        /// <param name="mainWindow">Главное окно</param>
+        public AddAnimalWindow(MainWindow mainWindow) : this()
         {
             cancelBtn.Click += delegate { this.DialogResult = false; };
             okBtn.Click += delegate
             {
-                repository.Animals.Add(AnimalFactory.GetAnimal(txtType.Text, txtName.Text));
+                mainWindow.AnimalType = txtType.Text;
+                mainWindow.AnimalName = txtName.Text;
+
                 this.DialogResult = !false;
             };
         }

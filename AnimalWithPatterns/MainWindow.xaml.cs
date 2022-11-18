@@ -20,35 +20,30 @@ namespace AnimalWithPatterns
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IView
     {
-        Repository repository;
-        SaverToFormats stf;
+        Presenter p;
 
+        public string AnimalType { get; set; }
+
+        public string AnimalName { get; set; }
+
+        public Animal ConcreteAnimal { get; set; }
+
+        public Repository LocalRepository { get; set; }
+
+        /// <summary>
+        /// Инициализация главного окна
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
 
-            Preparing();
-        }
+            p = new Presenter(this);
 
-        /// <summary>
-        /// Первая инициализация
-        /// </summary>
-        private void Preparing()
-        {
-            repository = RepositoryFactory.GetSQLRepository();
+            LocalRepository = p.GetRepository();
 
-            //repository.Animals.Add(AnimalFactory.GetAnimal("Mammals", "Жираф"));
-            //repository.Animals.Add(AnimalFactory.GetAnimal("Amphibias", "Змея"));
-            //repository.Animals.Add(AnimalFactory.GetAnimal("Birds", "Попугай"));
-            //repository.Animals.Add(AnimalFactory.GetAnimal("Mammals", "Пума"));
-            //repository.Animals.Add(AnimalFactory.GetAnimal("Amphibias", "Черепаха"));
-            //repository.Animals.Add(AnimalFactory.GetAnimal("Yeti", "Мохнатая обезьяна"));
-            //repository.SaveChanges();
-
-            repository.Animals.Load();
-            gridView.ItemsSource = repository.Animals.Local.ToBindingList();
+            gridView.ItemsSource = p.GetBindingList();
         }
 
         /// <summary>
@@ -58,16 +53,12 @@ namespace AnimalWithPatterns
         /// <param name="e"></param>
         private void MenuItemAddClick(object sender, RoutedEventArgs e)
         {
-            var animal = (Animal)gridView.SelectedItem;
-
-            AddAnimalWindow add = new AddAnimalWindow(repository);
+            AddAnimalWindow add = new AddAnimalWindow(this);
 
             add.ShowDialog();
 
             if (add.DialogResult.Value)
-            {
-                repository.SaveChanges();
-            }
+                p.AddAnimal();
         }
 
         /// <summary>
@@ -77,8 +68,8 @@ namespace AnimalWithPatterns
         /// <param name="e"></param>
         private void MenuItemDeleteClick(object sender, RoutedEventArgs e)
         {
-            var animal = (Animal)gridView.SelectedItem;
-            repository.Animals.Remove(animal);
+            ConcreteAnimal = (Animal)gridView.SelectedItem;
+            p.RemoveAnimal();
         }
 
         /// <summary>
@@ -88,23 +79,41 @@ namespace AnimalWithPatterns
         /// <param name="e"></param>
         private void AccessGVCurrentCellChanged(object sender, EventArgs e)
         {
-            repository.SaveChanges();
+            p.SaveData();
         }
 
+        /// <summary>
+        /// Сохранить в TXT
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItemSaveToTXTClick(object sender, RoutedEventArgs e)
         {
-            var saveToTXT = new SaverToTXT("AnimalsTXT");
-
-            stf = new SaverToFormats(saveToTXT, repository);
-            stf.Save();
+            p.SaveToTXT();
         }
 
+        /// <summary>
+        /// Сохранить в XLSX
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItemSaveToXLSXClick(object sender, RoutedEventArgs e)
         {
-            var saveToXLSX = new SaverToXLSX("AnimalsXLSX");
+            p.SaveToXLSX();
+        }
 
-            stf = new SaverToFormats(saveToXLSX, repository);
-            stf.Save();
+        /// <summary>
+        /// Добавить случайное животное
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MenuItemAddRandomClick(object sender, RoutedEventArgs e)
+        {
+            // Просто для примера.
+            AnimalType = "Random";
+            AnimalName = $"Неизвестное животное {new Random().Next().ToString()}";
+
+            p.AddRandomAnimal();
         }
     }
 }
